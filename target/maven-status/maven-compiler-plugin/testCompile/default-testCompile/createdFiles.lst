@@ -1,0 +1,3 @@
+step_definitions/WeatherAPI.class
+step_definitions/CucumberTestSuite.class
+step_definitions/GETStepdefs.class

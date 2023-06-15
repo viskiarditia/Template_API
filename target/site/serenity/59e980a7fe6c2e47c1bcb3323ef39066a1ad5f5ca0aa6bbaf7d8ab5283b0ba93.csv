@@ -1,0 +1,3 @@
+"Story","Title","Result","Date","Stability","Duration (s)"
+"Testing API GET Jojonomic","Get current weather","SUCCESS","2023-06-15T19:54:48.519323+07:00[Asia/Jakarta]","0.0","2.68"
+"Testing API GET Jojonomic","Get forecast weather","SUCCESS","2023-06-15T19:54:51.201506+07:00[Asia/Jakarta]","0.0","0.95"

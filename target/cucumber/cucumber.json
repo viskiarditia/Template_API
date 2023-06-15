@@ -1,0 +1,138 @@
+[
+  {
+    "line": 2,
+    "elements": [
+      {
+        "start_timestamp": "2023-06-15T12:54:48.484Z",
+        "line": 4,
+        "name": "Get current weather",
+        "description": "",
+        "id": "testing-api-get-jojonomic;get-current-weather",
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 2440355000,
+              "status": "passed"
+            },
+            "line": 5,
+            "name": "User Set Paramater API Current Weather",
+            "match": {
+              "location": "step_definitions.GETStepdefs.userSetParamaterAPICurrentWeather()"
+            },
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 16062000,
+              "status": "passed"
+            },
+            "line": 6,
+            "name": "Status Code Should be 200 OK",
+            "match": {
+              "arguments": [
+                {
+                  "val": "200",
+                  "offset": 22
+                }
+              ],
+              "location": "step_definitions.GETStepdefs.statusCodeShouldBeOK(int)"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 172839000,
+              "status": "passed"
+            },
+            "line": 7,
+            "name": "Validate GET Current Weather json schema",
+            "match": {
+              "location": "step_definitions.GETStepdefs.validateGETCurrentWeatherJsonSchema()"
+            },
+            "keyword": "And "
+          }
+        ],
+        "tags": [
+          {
+            "name": "@GET"
+          }
+        ]
+      },
+      {
+        "start_timestamp": "2023-06-15T12:54:51.200Z",
+        "line": 9,
+        "name": "Get forecast weather",
+        "description": "",
+        "id": "testing-api-get-jojonomic;get-forecast-weather",
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 933853000,
+              "status": "passed"
+            },
+            "line": 10,
+            "name": "Set Paramater Forecast Weather",
+            "match": {
+              "location": "step_definitions.GETStepdefs.setParamaterForecastWeather()"
+            },
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 1789000,
+              "status": "passed"
+            },
+            "line": 11,
+            "name": "Status Code Should be 200 OK",
+            "match": {
+              "arguments": [
+                {
+                  "val": "200",
+                  "offset": 22
+                }
+              ],
+              "location": "step_definitions.GETStepdefs.statusCodeShouldBeOK(int)"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 12038000,
+              "status": "passed"
+            },
+            "line": 12,
+            "name": "Validate GET forecast Weather json schema",
+            "match": {
+              "location": "step_definitions.GETStepdefs.validateGETForecastWeatherJsonSchema()"
+            },
+            "keyword": "And "
+          }
+        ],
+        "tags": [
+          {
+            "name": "@GET"
+          }
+        ]
+      }
+    ],
+    "name": "Testing API GET Jojonomic",
+    "description": "",
+    "id": "testing-api-get-jojonomic",
+    "keyword": "Feature",
+    "uri": "classpath:features//GET.feature",
+    "tags": [
+      {
+        "name": "@GET",
+        "type": "Tag",
+        "location": {
+          "line": 1,
+          "column": 1
+        }
+      }
+    ]
+  }
+]

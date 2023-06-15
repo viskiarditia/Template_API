@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>Get forecast weather</title>
+<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon" sizes="57x57" href="apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192"  href="android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
+<!--[if IE 7]>
+<!--<link rel="stylesheet" href="font-awesome/css/font-awesome-ie7.min.css">-->
+
+<link rel="stylesheet" type="text/css" href="fontawesome-free-5.7.2-web/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="fontawesome-free-5.7.2-web/css/v4-shims.min.css">
+
+<!-- JQuery -->
+<script type="text/javascript" src="scripts/jquery-1.11.1.min.js"></script><link rel="stylesheet" type="text/css" href="chartist/chartist-plugin-tooltip/dist/chartist-plugin-tooltip.min.css">
+<link rel="stylesheet" type="text/css" href="chartist/dist/chartist.min.css">
+<script src="chartist/dist/chartist.min.js"></script>
+<script src="chartist/chartist-plugin-tooltip/dist/chartist-plugin-tooltip.min.js"></script>
+<!-- Required Stylesheets -->
+<link href="bootstrap-treeview/dist/bootstrap-treeview.min.css" rel="stylesheet">
+
+<!-- Required Javascript -->
+<script src="bootstrap-treeview/dist/bootstrap-treeview.min.js"></script><!-- DataTables -->
+<link type="text/css" href="datatables/1.10.20/datatables.min.css" rel="stylesheet" />
+<script type="text/javascript" src="datatables/1.10.20/datatables.min.js"></script>
+<script type="text/javascript" src="datatables/1.10.20/time-elapsed-dhms.js"></script>
+
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<script src="bootstrap/js/bootstrap.min.js"></script>
+
+<script type="text/javascript" src="datatables/1.10.20/datatables.bootstrap4.min.js"></script>
+<link type="text/css" href="datatables/1.10.20/datatables.bootstrap4.min.css" rel="stylesheet" />
+
+<script>
+    jQuery.fn.dataTable.ext.type.order['time-elapsed-dhms-pre'] = function(data) {
+
+        var matches = data.match(/^(\d+(?:\.\d+)?)\s*([a-z]+)/i);
+        var multipliers = {
+            ms: 1,
+            s: 1000,
+            m: 60000,
+            h: 3600000,
+            d: 86400000
+        };
+
+        if (matches) {
+            var multiplier = multipliers[matches[2].toLowerCase()];
+            return parseFloat(matches[1]) * multiplier;
+        } else {
+            return -1;
+        };
+    };
+</script>
+<link rel="stylesheet" href="css/core.css"/>
+<link rel="stylesheet" href="css/link.css"/>
+<link type="text/css" media="screen" href="css/screen.css" rel="Stylesheet"/><!-- JQuery-UI -->
+<link type="text/css" href="jqueryui/1.11.2-start/jquery-ui.min.css" rel="Stylesheet" />
+<script type="text/javascript" src="jqueryui/1.11.2-start/jquery-ui.min.js"></script><!-- DataTables -->
+<link type="text/css" href="datatables/1.10.20/datatables.min.css" rel="stylesheet" />
+<script type="text/javascript" src="datatables/1.10.20/datatables.min.js"></script>
+<script type="text/javascript" src="datatables/1.10.20/time-elapsed-dhms.js"></script>
+
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<script src="bootstrap/js/bootstrap.min.js"></script>
+
+<script type="text/javascript" src="datatables/1.10.20/datatables.bootstrap4.min.js"></script>
+<link type="text/css" href="datatables/1.10.20/datatables.bootstrap4.min.css" rel="stylesheet" />
+
+<script>
+    jQuery.fn.dataTable.ext.type.order['time-elapsed-dhms-pre'] = function(data) {
+
+        var matches = data.match(/^(\d+(?:\.\d+)?)\s*([a-z]+)/i);
+        var multipliers = {
+            ms: 1,
+            s: 1000,
+            m: 60000,
+            h: 3600000,
+            d: 86400000
+        };
+
+        if (matches) {
+            var multiplier = multipliers[matches[2].toLowerCase()];
+            return parseFloat(matches[1]) * multiplier;
+        } else {
+            return -1;
+        };
+    };
+</script>
+<!-- ImgPreview -->
+<script src="scripts/imgpreview.full.jquery.js" type="text/javascript"></script>
+</head>
+
+<body class="results-page">
+
+
+<div id="topheader">
+    <div id="topbanner">
+        <div id="logo"><a href="index.html"><img src="images/serenity-logo.png" border="0"/></a></div>
+        <div id="projectname-banner" style="float:right">
+            <span class="projectname">
+                <span class="projecttitle"></span>
+                <span class="projectsubtitle"></span>
+            </span>
+        </div>
+    </div>
+</div>
+
+<div class="middlecontent">
+    <div id="contenttop">
+        <div class="middlebg">
+        <span class="breadcrumbs">
+            <a href="index.html" class="breadcrumbs">Home</a>
+
+            > <a href="b1c1ff32573d3e302eb8639f0d089d26566f59bea5a506a1c3998b0c87a13cc2.html">Testing API GET Jojonomic</a>
+        > Get forecast weather
+        </span>
+        </div>
+        <div class="rightbg"></div>
+    </div>
+
+    <div class="clr"></div>
+
+    <!--/* starts second table*/-->
+<div>
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#"><i class="fa fa-check-square-o"></i> Overall Test Results</a>
+        </li>
+        <li >
+            <a href="capabilities.html"><i class="fa fa-book"></i> Requirements</a>
+        </li>
+        <li >
+            <a href="576946480b52ad056d6f5bddf874399c83582ecf90963cc074a14c70580e7d9f.html"><i class="fa fa-comments-o"></i> Features</a>
+        </li>
+    </ul>
+    <span class="date-and-time"><a href="build-info.html"><i class="fa fa-info-circle"></i></a> Report generated 15-06-2023 19:54</span>
+    <br style="clear:left"/>
+</div>
+    <div class="clr"></div>
+
+
+    <div id="contentbody">
+        <div class="titlebar">
+            <div class="story-title">
+                <table class="outcome-header">
+                    <tr>
+                        <td>
+                                <div>
+                                    <h3 class="discreet-story-header">
+                                        <i class="fa fa-2x fa-comments-o"></i>
+                                        <span class="story-header-title">Testing API GET Jojonomic </span>
+                                    </h3>
+
+                                </div>
+
+                        </td>
+                        <td valign="top">
+                                <p class="tag">
+                                    <span class="badge tag-badge" style="background:default;">
+                                    <i class="fa fa-tag"></i>&nbsp;<a class="tagLink" style="background:default;"
+                                                                      href="3aad53e0673522f728c43fc8ff20ee3455197f948be19618b3c0084b3e7ede5a.html">GET
+                                    (tag)</a>
+                                </span>
+                                </p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="story-title">
+                <table class="outcome-header">
+                    <tr>
+                        <td colspan="2" class="test-title-bar">
+                            <span class="outcome-icon"><a href='##beforetable'><i class='fa fa-check-circle-o success-icon fa-2x' title='SUCCESS'></i></a></span>
+                            <span class="test-case-title">
+                                <span class="success-color">
+                                    Get forecast weather
+                                        <span class="related-issue-title"></span>
+                                </span>
+                            </span>
+
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+
+
+        </div>
+    </div>
+
+    <div class="clr"></div>
+
+
+    <div id="beforetable"></div>
+
+
+    <div id="tablecontents">
+        <div>
+            <table class="step-table">
+                <tr class="step-titles">
+                    <th width="65">
+                    </th>
+                    <th class="step-description-column greentext">
+                        Steps
+                    </th>
+
+                    <th width="130" class="greentext">Outcome</th>
+                    <th width="100" class="greentext"><i title="Duration" class="far fa-clock"></i></th>
+                </tr>
+                <tr class="step-table-separator">
+                    <td colspan="5"></td>
+                </tr>
+
+                    <tr class="test-SUCCESS">
+
+                        <td width="50" class="step-icon">
+                            <a name="0"></a>
+                                <a href="javaScript:void(0)" onClick="toggleDiv('stepSection0')"
+                                   style="display:block">
+                                    <i class="fa fa-plus-square-o imgstepSection0 success-icon"
+                                       style="margin-left: 20px; float:left; padding-right:5px"></i>
+                                </a>
+                        </td>
+
+                        <td class="step-description-column">
+                            <div class="step-description">
+                                <a href="javaScript:void(0)" onClick="toggleDiv('stepSection0')"
+                                   style="display:block;">
+                                    <span class="top-level-step">
+                                                Given Set Paramater Forecast Weather
+                                        </span>
+                                </a>
+                                <span class="evidence">
+                                </span>
+                            </div>
+                        </td>
+
+                        <td width="130"><span class="top-level-step">SUCCESS</span></td>
+                        <td width="100"><span class="top-level-step">935ms</span></td>
+                    </tr>
+                        <tr>
+                            <td colspan="5">
+                                <table id="stepSection0" class="step-table-nested" style="display:none;">
+                    <tr class="test-SUCCESS">
+
+                        <td width="70" class="step-icon">
+                            <a name="0-0"></a>
+                                <span style="margin-left: 40px;"
+                                      class="nested-group-icon"><a href='##beforetable'><i class='fa fa-check-circle-o success-icon ' title='SUCCESS'></i></a>
+                                </span>
+                        </td>
+
+                        <td class="step-description-column">
+                            <div class="step-description">
+                                    <span class="nested-group-step">
+                                                GET https://api.weatherbit.io/v2.0/forecast/daily?postal_code=16620&amp;key=47b59baa393a4264b0a2604e6892ef87
+                                        </span>
+                                <span class="evidence">
+                                        <span class="piece-of-evidence">
+                    <span>
+                        <button type="button" class="btn btn-success btn-sm" data-toggle="collapse"
+                                data-target="#restModal-REST-2">
+                            REST Query
+                        </button>
+                    </span>
+                    <!-- Modal -->
+                    <div class="rest-query-details">
+                        <div class="collapse multi-collapse" id="restModal-REST-2">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4>Response</h4>
+                                        <p>URL: https://api.weatherbit.io/v2.0/forecast/daily?postal_code=16620&key=47b59baa393a4264b0a2604e6892ef87</p>
+                                        <p>Status code: 200</p>
+                                        <p>Content Type: null</p>
+                                        <h4>Request Headers</h4>
+                                        <pre>Accept=*/*</pre>
+                                        <h4>Response Headers</h4>
+                                        <pre>server: openresty/1.19.3.1<br>date: Thu, 15 Jun 2023 12:54:52 GMT<br>content-type: application/json; charset=utf-8<br>transfer-encoding: chunked<br>keep-alive: timeout=5<br>x-ratelimit-limit: 1500<br>x-ratelimit-remaining: 1466<br>x-ratelimit-reset: 1686873600<br>x-proxy-cache: HIT<br>access-control-allow-origin: *<br>access-control-allow-methods: GET, OPTIONS, POST<br>access-control-allow-headers: DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range<br>access-control-expose-headers: DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range<br>content-encoding: gzip</pre>
+                                    <h4>Response Body</h4>
+                                        <pre>{<br>    &quot;city_name&quot;: &quot;Clearfield&quot;,<br>    &quot;country_code&quot;: &quot;US&quot;,<br>    &quot;data&quot;: [<br>        {<br>            &quot;app_max_temp&quot;: 21.6,<br>            &quot;app_min_temp&quot;: 7.6,<br>            &quot;clouds&quot;: 7,<br>            &quot;clouds_hi&quot;: 11,<br>            &quot;clouds_low&quot;: 2,<br>            &quot;clouds_mid&quot;: 4,<br>            &quot;datetime&quot;: &quot;2023-06-15&quot;,<br>            &quot;dewpt&quot;: 10.3,<br>            &quot;high_temp&quot;: 22.7,<br>            &quot;low_temp&quot;: 11.3,<br>            &quot;max_dhi&quot;: null,<br>            &quot;max_temp&quot;: 22.7,<br>            &quot;min_temp&quot;: 7.2,<br>            &quot;moon_phase&quot;: 0.0156893,<br>            &quot;moon_phase_lunation&quot;: 0.93,<br>            &quot;moonrise_ts&quot;: 1686814794,<br>            &quot;moonset_ts&quot;: 1686872987,<br>            &quot;ozone&quot;: 347.5,<br>            &quot;pop&quot;: 0,<br>            &quot;precip&quot;: 0,<br>            &quot;pres&quot;: 950.6,<br>            &quot;rh&quot;: 72,<br>            &quot;slp&quot;: 1006.6,<br>            &quot;snow&quot;: 0,<br>            &quot;snow_depth&quot;: 0,<br>            &quot;sunrise_ts&quot;: 1686822059,<br>            &quot;sunset_ts&quot;: 1686876490,<br>            &quot;temp&quot;: 16,<br>            &quot;ts&quot;: 1686812460,<br>            &quot;uv&quot;: 10,<br>            &quot;valid_date&quot;: &quot;2023-06-15&quot;,<br>            &quot;vis&quot;: 25.289,<br>            &quot;weather&quot;: {<br>                &quot;description&quot;: &quot;Few clouds&quot;,<br>                &quot;code&quot;: 801,<br>                &quot;icon&quot;: &quot;c02d&quot;<br>            },<br>            &quot;wind_cdir&quot;: &quot;W&quot;,<br>            &quot;wind_cdir_full&quot;: &quot;west&quot;,<br>            &quot;wind_dir&quot;: 264,<br>            &quot;wind_gust_spd&quot;: 4.6,<br>            &quot;wind_spd&quot;: 3<br>        },<br>        {<br>            &quot;app_max_temp&quot;: 19.7,<br>            &quot;app_min_temp&quot;: 11.9,<br>            &quot;clouds&quot;: 84,<br>            &quot;clouds_hi&quot;: 57,<br>            &quot;clouds_low&quot;: 60,<br>            &quot;clouds_mid&quot;: 65,<br>            &quot;datetime&quot;: &quot;2023-06-16&quot;,<br>            &quot;dewpt&quot;: 13.3,<br>            &quot;high_temp&quot;: 20.7,<br>            &quot;low_temp&quot;: 10.8,<br>            &quot;max_dhi&quot;: null,<br>            &quot;max_temp&quot;: 20.7,<br>            &quot;min_temp&quot;: 11.3,<br>            &quot;moon_phase&quot;: 0.00152697,<br>            &quot;moon_phase_lunation&quot;: 0.96,<br>            &quot;moonrise_ts&quot;: 1686903130,<br>            &quot;moonset_ts&quot;: 1686963182,<br>            &quot;ozone&quot;: 353.1,<br>            &quot;pop&quot;: 75,<br>            &quot;precip&quot;: 8.510693,<br>            &quot;pres&quot;: 950.5,<br>            &quot;rh&quot;: 85,<br>            &quot;slp&quot;: 1006.4,<br>            &quot;snow&quot;: 0,<br>            &quot;snow_depth&quot;: 0,<br>            &quot;sunrise_ts&quot;: 1686908461,<br>            &quot;sunset_ts&quot;: 1686962912,<br>            &quot;temp&quot;: 15.9,<br>            &quot;ts&quot;: 1686888060,<br>            &quot;uv&quot;: 8.9,<br>            &quot;valid_date&quot;: &quot;2023-06-16&quot;,<br>            &quot;vis&quot;: 22.089,<br>            &quot;weather&quot;: {<br>                &quot;description&quot;: &quot;Thunderstorm with rain&quot;,<br>                &quot;code&quot;: 201,<br>                &quot;icon&quot;: &quot;t02d&quot;<br>            },<br>            &quot;wind_cdir&quot;: &quot;WSW&quot;,<br>            &quot;wind_cdir_full&quot;: &quot;west-southwest&quot;,<br>            &quot;wind_dir&quot;: 250,<br>            &quot;wind_gust_spd&quot;: 5.3,<br>            &quot;wind_spd&quot;: 3.5<br>        },<br>        {<br>            &quot;app_max_temp&quot;: 21.4,<br>            &quot;app_min_temp&quot;: 11.3,<br>            &quot;clouds&quot;: 44,<br>            &quot;clouds_hi&quot;: 5,<br>            &quot;clouds_low&quot;: 19,<br>            &quot;clouds_mid&quot;: 1,<br>            &quot;datetime&quot;: &quot;2023-06-17&quot;,<br>            &quot;dewpt&quot;: 11.3,<br>            &quot;high_temp&quot;: 22.9,<br>            &quot;low_temp&quot;: 8.1,<br>            &quot;max_dhi&quot;: null,<br>            &quot;max_temp&quot;: 22.9,<br>            &quot;min_temp&quot;: 10.8,<br>            &quot;moon_phase&quot;: 0.00152697,<br>            &quot;moon_phase_lunation&quot;: 0.99,<br>            &quot;moonrise_ts&quot;: 1686991854,<br>            &quot;moonset_ts&quot;: 1687049582,<br>            &quot;ozone&quot;: 345.6,<br>            &quot;pop&quot;: 35,<br>            &quot;precip&quot;: 1.46,<br>            &quot;pres&quot;: 952.4,<br>            &quot;rh&quot;: 75,<br>            &quot;slp&quot;: 1008.3,<br>            &quot;snow&quot;: 0,<br>            &quot;snow_depth&quot;: 0,<br>            &quot;sunrise_ts&quot;: 1686994865,<br>            &quot;sunset_ts&quot;: 1687049333,<br>            &quot;temp&quot;: 16.6,<br>            &quot;ts&quot;: 1686974460,<br>            &quot;uv&quot;: 7.7,<br>            &quot;valid_date&quot;: &quot;2023-06-17&quot;,<br>            &quot;vis&quot;: 23.187,<br>            &quot;weather&quot;: {<br>                &quot;description&quot;: &quot;Broken clouds&quot;,<br>                &quot;code&quot;: 803,<br>                &quot;icon&quot;: &quot;c03d&quot;<br>            },<br>            &quot;wind_cdir&quot;: &quot;NW&quot;,<br>            &quot;wind_cdir_full&quot;: &quot;northwest&quot;,<br>            &quot;wind_dir&quot;: 312,<br>            &quot;wind_gust_spd&quot;: 8.9,<br>            &quot;wind_spd&quot;: 5.8<br>        },<br>        {<br>            &quot;app_max_temp&quot;: 23.4,<br>            &quot;app_min_temp&quot;: 8.8,<br>            &quot;clouds&quot;: 22,<br>            &quot;clouds_hi&quot;: 49,<br>            &quot;clouds_low&quot;: 0,<br>            &quot;clouds_mid&quot;: 2,<br>            &quot;datetime&quot;: &quot;2023-06-18&quot;,<br>            &quot;dewpt&quot;: 10.2,<br>            &quot;high_temp&quot;: 24.5,<br>            &quot;low_temp&quot;: 11.7,<br>            &quot;max_dhi&quot;: null,<br>            &quot;max_temp&quot;: 24.5,<br>            &quot;min_temp&quot;: 8.1,<br>            &quot;moon_phase&quot;: 0.00924921,<br>            &quot;moon_phase_lunation&quot;: 0.03,<br>            &quot;moonrise_ts&quot;: 1687081032,<br>            &quot;moonset_ts&quot;: 1687139348,<br>            &quot;ozone&quot;: 333,<br>            &quot;pop&quot;: 0,<br>            &quot;precip&quot;: 0,<br>            &quot;pres&quot;: 956.3,<br>            &quot;rh&quot;: 67,<br>            &quot;slp&quot;: 1012.6,<br>            &quot;snow&quot;: 0,<br>            &quot;snow_depth&quot;: 0,<br>            &quot;sunrise_ts&quot;: 1687081271,<br>            &quot;sunset_ts&quot;: 1687135752,<br>            &quot;temp&quot;: 17.1,<br>            &quot;ts&quot;: 1687060860,<br>            &quot;uv&quot;: 8.8,<br>            &quot;valid_date&quot;: &quot;2023-06-18&quot;,<br>            &quot;vis&quot;: 24.128,<br>            &quot;weather&quot;: {<br>                &quot;description&quot;: &quot;Scattered clouds&quot;,<br>                &quot;code&quot;: 802,<br>                &quot;icon&quot;: &quot;c02d&quot;<br>            },<br>            &quot;wind_cdir&quot;: &quot;W&quot;,<br>            &quot;wind_cdir_full&quot;: &quot;west&quot;,<br>            &quot;wind_dir&quot;: 277,<br>            &quot;wind_gust_spd&quot;: 4.9,<br>            &quot;wind_spd&quot;: 3.3<br>        },<br>        {<br>            &quot;app_max_temp&quot;: 26.4,<br>            &quot;app_min_temp&quot;: 12.5,<br>            &quot;clouds&quot;: 31,<br>            &quot;clouds_hi&quot;: 4,<br>            &quot;clouds_low&quot;: 10,<br>            &quot;clouds_mid&quot;: 0,<br>            &quot;datetime&quot;: &quot;2023-06-19&quot;,<br>            &quot;dewpt&quot;: 12.9,<br>            &quot;high_temp&quot;: 27.3,<br>            &quot;low_temp&quot;: 15.7,<br>            &quot;max_dhi&quot;: null,<br>            &quot;max_temp&quot;: 27.3,<br>            &quot;min_temp&quot;: 11.7,<br>            &quot;moon_phase&quot;: 0.0372247,<br>            &quot;moon_phase_lunation&quot;: 0.06,<br>            &quot;moonrise_ts&quot;: 1687170653,<br>            &quot;moonset_ts&quot;: 1687228593,<br>            &quot;ozone&quot;: 324.3,<br>            &quot;pop&quot;: 50,<br>            &quot;precip&quot;: 3.1,<br>            &quot;pres&quot;: 958.5,<br>            &quot;rh&quot;: 67,<br>            &quot;slp&quot;: 1014.3,<br>            &quot;snow&quot;: 0,<br>            &quot;snow_depth&quot;: 0,<br>            &quot;sunrise_ts&quot;: 1687167679,<br>            &quot;sunset_ts&quot;: 1687222169,<br>            &quot;temp&quot;: 19.5,<br>            &quot;ts&quot;: 1687147260,<br>            &quot;uv&quot;: 8.2,<br>            &quot;valid_date&quot;: &quot;2023-06-19&quot;,<br>            &quot;vis&quot;: 24.128,<br>            &quot;weather&quot;: {<br>                &quot;description&quot;: &quot;Thunderstorm with rain&quot;,<br>                &quot;code&quot;: 201,<br>                &quot;icon&quot;: &quot;t02d&quot;<br>            },<br>            &quot;wind_cdir&quot;: &quot;ESE&quot;,<br>            &quot;wind_cdir_full&quot;: &quot;east-southeast&quot;,<br>            &quot;wind_dir&quot;: 109,<br>            &quot;wind_gust_spd&quot;: 5.4,<br>            &quot;wind_spd&quot;: 3.6<br>        },<br>        {<br>            &quot;app_max_temp&quot;: 26.9,<br>            &quot;app_min_temp&quot;: 16.2,<br>            &quot;clouds&quot;: 54,<br>            &quot;clouds_hi&quot;: 64,<br>            &quot;clouds_low&quot;: 9,<br>            &quot;clouds_mid&quot;: 0,<br>            &quot;datetime&quot;: &quot;2023-06-20&quot;,<br>            &quot;dewpt&quot;: 14.8,<br>            &quot;high_temp&quot;: 27.1,<br>            &quot;low_temp&quot;: 14.7,<br>            &quot;max_dhi&quot;: null,<br>            &quot;max_temp&quot;: 27.1,<br>            &quot;min_temp&quot;: 15.7,<br>            &quot;moon_phase&quot;: 0.0831528,<br>            &quot;moon_phase_lunation&quot;: 0.09,<br>            &quot;moonrise_ts&quot;: 1687260609,<br>            &quot;moonset_ts&quot;: 1687317326,<br>            &quot;ozone&quot;: 321.7,<br>            &quot;pop&quot;: 45,<br>            &quot;precip&quot;: 2.25,<br>            &quot;pres&quot;: 961.4,<br>            &quot;rh&quot;: 80,<br>            &quot;slp&quot;: 1017.4,<br>            &quot;snow&quot;: 0,<br>            &quot;snow_depth&quot;: 0,<br>            &quot;sunrise_ts&quot;: 1687254089,<br>            &quot;sunset_ts&quot;: 1687308584,<br>            &quot;temp&quot;: 18.8,<br>            &quot;ts&quot;: 1687233660,<br>            &quot;uv&quot;: 10.5,<br>            &quot;valid_date&quot;: &quot;2023-06-20&quot;,<br>            &quot;vis&quot;: 23.718,<br>            &quot;weather&quot;: {<br>                &quot;description&quot;: &quot;Broken clouds&quot;,<br>                &quot;code&quot;: 803,<br>                &quot;icon&quot;: &quot;c03d&quot;<br>            },<br>            &quot;wind_cdir&quot;: &quot;ESE&quot;,<br>            &quot;wind_cdir_full&quot;: &quot;east-southeast&quot;,<br>            &quot;wind_dir&quot;: 115,<br>            &quot;wind_gust_spd&quot;: 6.5,<br>            &quot;wind_spd&quot;: 4<br>        },<br>        {<br>            &quot;app_max_temp&quot;: 20.8,<br>            &quot;app_min_temp&quot;: 14.7,<br>            &quot;clouds&quot;: 86,<br>            &quot;clouds_hi&quot;: 100,<br>            &quot;clouds_low&quot;: 30,<br>            &quot;clouds_mid&quot;: 71,<br>            &quot;datetime&quot;: &quot;2023-06-21&quot;,<br>            &quot;dewpt&quot;: 14,<br>            &quot;high_temp&quot;: 21.1,<br>            &quot;low_temp&quot;: 12,<br>            &quot;max_dhi&quot;: null,<br>            &quot;max_temp&quot;: 21.1,<br>            &quot;min_temp&quot;: 14.7,<br>            &quot;moon_phase&quot;: 0.144408,<br>            &quot;moon_phase_lunation&quot;: 0.13,<br>            &quot;moonrise_ts&quot;: 1687350741,<br>            &quot;moonset_ts&quot;: 1687405629,<br>            &quot;ozone&quot;: 320,<br>            &quot;pop&quot;: 20,<br>            &quot;precip&quot;: 0.125,<br>            &quot;pres&quot;: 962.9,<br>            &quot;rh&quot;: 80,<br>            &quot;slp&quot;: 1019.3,<br>            &quot;snow&quot;: 0,<br>            &quot;snow_depth&quot;: 0,<br>            &quot;sunrise_ts&quot;: 1687340501,<br>            &quot;sunset_ts&quot;: 1687394998,<br>            &quot;temp&quot;: 17.8,<br>            &quot;ts&quot;: 1687320060,<br>            &quot;uv&quot;: 10.5,<br>            &quot;valid_date&quot;: &quot;2023-06-21&quot;,<br>            &quot;vis&quot;: 24.128,<br>            &quot;weather&quot;: {<br>                &quot;description&quot;: &quot;Overcast clouds&quot;,<br>                &quot;code&quot;: 804,<br>                &quot;icon&quot;: &quot;c04d&quot;<br>            },<br>            &quot;wind_cdir&quot;: &quot;ESE&quot;,<br>            &quot;wind_cdir_full&quot;: &quot;east-southeast&quot;,<br>            &quot;wind_dir&quot;: 109,<br>            &quot;wind_gust_spd&quot;: 6.2,<br>            &quot;wind_spd&quot;: 3.1<br>        },<br>        {<br>            &quot;app_max_temp&quot;: 19.5,<br>            &quot;app_min_temp&quot;: 12,<br>            &quot;clouds&quot;: 92,<br>            &quot;clouds_hi&quot;: 98,<br>            &quot;clouds_low&quot;: 60,<br>            &quot;clouds_mid&quot;: 89,<br>            &quot;datetime&quot;: &quot;2023-06-22&quot;,<br>            &quot;dewpt&quot;: 12.9,<br>            &quot;high_temp&quot;: 19.9,<br>            &quot;low_temp&quot;: 13.9,<br>            &quot;max_dhi&quot;: null,<br>            &quot;max_temp&quot;: 19.9,<br>            &quot;min_temp&quot;: 12,<br>            &quot;moon_phase&quot;: 0.218307,<br>            &quot;moon_phase_lunation&quot;: 0.16,<br>            &quot;moonrise_ts&quot;: 1687440910,<br>            &quot;moonset_ts&quot;: 1687407212,<br>            &quot;ozone&quot;: 318.1,<br>            &quot;pop&quot;: 15,<br>            &quot;precip&quot;: 0.3125,<br>            &quot;pres&quot;: 962.1,<br>            &quot;rh&quot;: 84,<br>            &quot;slp&quot;: 1018.8,<br>            &quot;snow&quot;: 0,<br>            &quot;snow_depth&quot;: 0,<br>            &quot;sunrise_ts&quot;: 1687426915,<br>            &quot;sunset_ts&quot;: 1687481409,<br>            &quot;temp&quot;: 15.9,<br>            &quot;ts&quot;: 1687406460,<br>            &quot;uv&quot;: 10.5,<br>            &quot;valid_date&quot;: &quot;2023-06-22&quot;,<br>            &quot;vis&quot;: 24.128,<br>            &quot;weather&quot;: {<br>                &quot;description&quot;: &quot;Overcast clouds&quot;,<br>                &quot;code&quot;: 804,<br>                &quot;icon&quot;: &quot;c04d&quot;<br>            },<br>            &quot;wind_cdir&quot;: &quot;ESE&quot;,<br>            &quot;wind_cdir_full&quot;: &quot;east-southeast&quot;,<br>            &quot;wind_dir&quot;: 113,<br>            &quot;wind_gust_spd&quot;: 7.4,<br>            &quot;wind_spd&quot;: 2.7<br>        },<br>        {<br>            &quot;app_max_temp&quot;: 16.4,<br>            &quot;app_min_temp&quot;: 13.1,<br>            &quot;clouds&quot;: 100,<br>            &quot;clouds_hi&quot;: 75,<br>            &quot;clouds_low&quot;: 99,<br>            &quot;clouds_mid&quot;: 84,<br>            &quot;datetime&quot;: &quot;2023-06-23&quot;,<br>            &quot;dewpt&quot;: 12.3,<br>            &quot;high_temp&quot;: 16.4,<br>            &quot;low_temp&quot;: 13.1,<br>            &quot;max_dhi&quot;: null,<br>            &quot;max_temp&quot;: 16.4,<br>            &quot;min_temp&quot;: 13.1,<br>            &quot;moon_phase&quot;: 0.302276,<br>            &quot;moon_phase_lunation&quot;: 0.2,<br>            &quot;moonrise_ts&quot;: 1687531037,<br>            &quot;moonset_ts&quot;: 1687494976,<br>            &quot;ozone&quot;: 313,<br>            &quot;pop&quot;: 40,<br>            &quot;precip&quot;: 1.25,<br>            &quot;pres&quot;: 958.9,<br>            &quot;rh&quot;: 89,<br>            &quot;slp&quot;: 1015.7,<br>            &quot;snow&quot;: 0,<br>            &quot;snow_depth&quot;: 0,<br>            &quot;sunrise_ts&quot;: 1687513330,<br>            &quot;sunset_ts&quot;: 1687567818,<br>            &quot;temp&quot;: 14.2,<br>            &quot;ts&quot;: 1687492860,<br>            &quot;uv&quot;: 10.5,<br>            &quot;valid_date&quot;: &quot;2023-06-23&quot;,<br>            &quot;vis&quot;: 24.122,<br>            &quot;weather&quot;: {<br>                &quot;description&quot;: &quot;Overcast clouds&quot;,<br>                &quot;code&quot;: 804,<br>                &quot;icon&quot;: &quot;c04d&quot;<br>            },<br>            &quot;wind_cdir&quot;: &quot;ENE&quot;,<br>            &quot;wind_cdir_full&quot;: &quot;east-northeast&quot;,<br>            &quot;wind_dir&quot;: 69,<br>            &quot;wind_gust_spd&quot;: 6,<br>            &quot;wind_spd&quot;: 2<br>        },<br>        {<br>            &quot;app_max_temp&quot;: 19.1,<br>            &quot;app_min_temp&quot;: 13.5,<br>            &quot;clouds&quot;: 99,<br>            &quot;clouds_hi&quot;: 89,<br>            &quot;clouds_low&quot;: 84,<br>            &quot;clouds_mid&quot;: 90,<br>            &quot;datetime&quot;: &quot;2023-06-24&quot;,<br>            &quot;dewpt&quot;: 14.7,<br>            &quot;high_temp&quot;: 19,<br>            &quot;low_temp&quot;: 14,<br>            &quot;max_dhi&quot;: null,<br>            &quot;max_temp&quot;: 19,<br>            &quot;min_temp&quot;: 13.5,<br>            &quot;moon_phase&quot;: 0.393881,<br>            &quot;moon_phase_lunation&quot;: 0.23,<br>            &quot;moonrise_ts&quot;: 1687621108,<br>            &quot;moonset_ts&quot;: 1687582608,<br>            &quot;ozone&quot;: 328.8,<br>            &quot;pop&quot;: 20,<br>            &quot;precip&quot;: 0.5,<br>            &quot;pres&quot;: 952.9,<br>            &quot;rh&quot;: 90,<br>            &quot;slp&quot;: 1008.9,<br>            &quot;snow&quot;: 0,<br>            &quot;snow_depth&quot;: 0,<br>            &quot;sunrise_ts&quot;: 1687599747,<br>            &quot;sunset_ts&quot;: 1687654226,<br>            &quot;temp&quot;: 16.3,<br>            &quot;ts&quot;: 1687579260,<br>            &quot;uv&quot;: 10.5,<br>            &quot;valid_date&quot;: &quot;2023-06-24&quot;,<br>            &quot;vis&quot;: 24.128,<br>            &quot;weather&quot;: {<br>                &quot;description&quot;: &quot;Overcast clouds&quot;,<br>                &quot;code&quot;: 804,<br>                &quot;icon&quot;: &quot;c04d&quot;<br>            },<br>            &quot;wind_cdir&quot;: &quot;W&quot;,<br>            &quot;wind_cdir_full&quot;: &quot;west&quot;,<br>            &quot;wind_dir&quot;: 264,<br>            &quot;wind_gust_spd&quot;: 2.7,<br>            &quot;wind_spd&quot;: 1.4<br>        },<br>        {<br>            &quot;app_max_temp&quot;: 26.9,<br>            &quot;app_min_temp&quot;: 14,<br>            &quot;clouds&quot;: 89,<br>            &quot;clouds_hi&quot;: 100,<br>            &quot;clouds_low&quot;: 52,<br>            &quot;clouds_mid&quot;: 42,<br>            &quot;datetime&quot;: &quot;2023-06-25&quot;,<br>            &quot;dewpt&quot;: 13.7,<br>            &quot;high_temp&quot;: 29.4,<br>            &quot;low_temp&quot;: 12.7,<br>            &quot;max_dhi&quot;: null,<br>            &quot;max_temp&quot;: 29.4,<br>            &quot;min_temp&quot;: 14,<br>            &quot;moon_phase&quot;: 0.490709,<br>            &quot;moon_phase_lunation&quot;: 0.26,<br>            &quot;moonrise_ts&quot;: 1687711158,<br>            &quot;moonset_ts&quot;: 1687670184,<br>            &quot;ozone&quot;: 327.6,<br>            &quot;pop&quot;: 0,<br>            &quot;precip&quot;: 0,<br>            &quot;pres&quot;: 952.5,<br>            &quot;rh&quot;: 72,<br>            &quot;slp&quot;: 1007.8,<br>            &quot;snow&quot;: 0,<br>            &quot;snow_depth&quot;: 0,<br>            &quot;sunrise_ts&quot;: 1687686167,<br>            &quot;sunset_ts&quot;: 1687740631,<br>            &quot;temp&quot;: 20.4,<br>            &quot;ts&quot;: 1687665660,<br>            &quot;uv&quot;: 10.5,<br>            &quot;valid_date&quot;: &quot;2023-06-25&quot;,<br>            &quot;vis&quot;: 24.128,<br>            &quot;weather&quot;: {<br>                &quot;description&quot;: &quot;Overcast clouds&quot;,<br>                &quot;code&quot;: 804,<br>                &quot;icon&quot;: &quot;c04d&quot;<br>            },<br>            &quot;wind_cdir&quot;: &quot;WNW&quot;,<br>            &quot;wind_cdir_full&quot;: &quot;west-northwest&quot;,<br>            &quot;wind_dir&quot;: 290,<br>            &quot;wind_gust_spd&quot;: 4.3,<br>            &quot;wind_spd&quot;: 2.9<br>        },<br>        {<br>            &quot;app_max_temp&quot;: 28.3,<br>            &quot;app_min_temp&quot;: 14.2,<br>            &quot;clouds&quot;: 12,<br>            &quot;clouds_hi&quot;: 47,<br>            &quot;clouds_low&quot;: 1,<br>            &quot;clouds_mid&quot;: 0,<br>            &quot;datetime&quot;: &quot;2023-06-26&quot;,<br>            &quot;dewpt&quot;: 12.9,<br>            &quot;high_temp&quot;: 31.9,<br>            &quot;low_temp&quot;: 15.2,<br>            &quot;max_dhi&quot;: null,<br>            &quot;max_temp&quot;: 31.9,<br>            &quot;min_temp&quot;: 12.7,<br>            &quot;moon_phase&quot;: 0.590107,<br>            &quot;moon_phase_lunation&quot;: 0.3,<br>            &quot;moonrise_ts&quot;: 1687801249,<br>            &quot;moonset_ts&quot;: 1687757779,<br>            &quot;ozone&quot;: 328.4,<br>            &quot;pop&quot;: 20,<br>            &quot;precip&quot;: 0.0625,<br>            &quot;pres&quot;: 953.8,<br>            &quot;rh&quot;: 65,<br>            &quot;slp&quot;: 1008.9,<br>            &quot;snow&quot;: 0,<br>            &quot;snow_depth&quot;: 0,<br>            &quot;sunrise_ts&quot;: 1687772587,<br>            &quot;sunset_ts&quot;: 1687827035,<br>            &quot;temp&quot;: 21.6,<br>            &quot;ts&quot;: 1687752060,<br>            &quot;uv&quot;: 10.5,<br>            &quot;valid_date&quot;: &quot;2023-06-26&quot;,<br>            &quot;vis&quot;: 24.128,<br>            &quot;weather&quot;: {<br>                &quot;description&quot;: &quot;Few clouds&quot;,<br>                &quot;code&quot;: 801,<br>                &quot;icon&quot;: &quot;c02d&quot;<br>            },<br>            &quot;wind_cdir&quot;: &quot;W&quot;,<br>            &quot;wind_cdir_full&quot;: &quot;west&quot;,<br>            &quot;wind_dir&quot;: 278,<br>            &quot;wind_gust_spd&quot;: 3.1,<br>            &quot;wind_spd&quot;: 2.5<br>        },<br>        {<br>            &quot;app_max_temp&quot;: 23.9,<br>            &quot;app_min_temp&quot;: 16.9,<br>            &quot;clouds&quot;: 53,<br>            &quot;clouds_hi&quot;: 62,<br>            &quot;clouds_low&quot;: 41,<br>            &quot;clouds_mid&quot;: 53,<br>            &quot;datetime&quot;: &quot;2023-06-27&quot;,<br>            &quot;dewpt&quot;: 17.1,<br>            &quot;high_temp&quot;: 25.9,<br>            &quot;low_temp&quot;: 13,<br>            &quot;max_dhi&quot;: null,<br>            &quot;max_temp&quot;: 25.9,<br>            &quot;min_temp&quot;: 15.2,<br>            &quot;moon_phase&quot;: 0.688837,<br>            &quot;moon_phase_lunation&quot;: 0.33,<br>            &quot;moonrise_ts&quot;: 1687891457,<br>            &quot;moonset_ts&quot;: 1687845471,<br>            &quot;ozone&quot;: 319.6,<br>            &quot;pop&quot;: 75,<br>            &quot;precip&quot;: 8.625,<br>            &quot;pres&quot;: 952.3,<br>            &quot;rh&quot;: 83,<br>            &quot;slp&quot;: 1007.5,<br>            &quot;snow&quot;: 0,<br>            &quot;snow_depth&quot;: 0,<br>            &quot;sunrise_ts&quot;: 1687859010,<br>            &quot;sunset_ts&quot;: 1687913436,<br>            &quot;temp&quot;: 20.2,<br>            &quot;ts&quot;: 1687838460,<br>            &quot;uv&quot;: 10.5,<br>            &quot;valid_date&quot;: &quot;2023-06-27&quot;,<br>            &quot;vis&quot;: 24.128,<br>            &quot;weather&quot;: {<br>                &quot;description&quot;: &quot;Moderate rain&quot;,<br>                &quot;code&quot;: 501,<br>                &quot;icon&quot;: &quot;r02d&quot;<br>            },<br>            &quot;wind_cdir&quot;: &quot;ESE&quot;,<br>            &quot;wind_cdir_full&quot;: &quot;east-southeast&quot;,<br>            &quot;wind_dir&quot;: 118,<br>            &quot;wind_gust_spd&quot;: 2.6,<br>            &quot;wind_spd&quot;: 1.9<br>        },<br>        {<br>            &quot;app_max_temp&quot;: 26.8,<br>            &quot;app_min_temp&quot;: 14.5,<br>            &quot;clouds&quot;: 13,<br>            &quot;clouds_hi&quot;: 50,<br>            &quot;clouds_low&quot;: 0,<br>            &quot;clouds_mid&quot;: 0,<br>            &quot;datetime&quot;: &quot;2023-06-28&quot;,<br>            &quot;dewpt&quot;: 10.9,<br>            &quot;high_temp&quot;: 30.4,<br>            &quot;low_temp&quot;: 14.6,<br>            &quot;max_dhi&quot;: null,<br>            &quot;max_temp&quot;: 30.4,<br>            &quot;min_temp&quot;: 13,<br>            &quot;moon_phase&quot;: 0.782767,<br>            &quot;moon_phase_lunation&quot;: 0.37,<br>            &quot;moonrise_ts&quot;: 1687981859,<br>            &quot;moonset_ts&quot;: 1687933358,<br>            &quot;ozone&quot;: 315,<br>            &quot;pop&quot;: 75,<br>            &quot;precip&quot;: 9.625,<br>            &quot;pres&quot;: 955.8,<br>            &quot;rh&quot;: 63,<br>            &quot;slp&quot;: 1011.1,<br>            &quot;snow&quot;: 0,<br>            &quot;snow_depth&quot;: 0,<br>            &quot;sunrise_ts&quot;: 1687945434,<br>            &quot;sunset_ts&quot;: 1687999835,<br>            &quot;temp&quot;: 21.1,<br>            &quot;ts&quot;: 1687924860,<br>            &quot;uv&quot;: 10.5,<br>            &quot;valid_date&quot;: &quot;2023-06-28&quot;,<br>            &quot;vis&quot;: 24.128,<br>            &quot;weather&quot;: {<br>                &quot;description&quot;: &quot;Thunderstorm with rain&quot;,<br>                &quot;code&quot;: 201,<br>                &quot;icon&quot;: &quot;t02d&quot;<br>            },<br>            &quot;wind_cdir&quot;: &quot;NW&quot;,<br>            &quot;wind_cdir_full&quot;: &quot;northwest&quot;,<br>            &quot;wind_dir&quot;: 316,<br>            &quot;wind_gust_spd&quot;: 2,<br>            &quot;wind_spd&quot;: 1.7<br>        },<br>        {<br>            &quot;app_max_temp&quot;: 30.5,<br>            &quot;app_min_temp&quot;: 16.2,<br>            &quot;clouds&quot;: 13,<br>            &quot;clouds_hi&quot;: 50,<br>            &quot;clouds_low&quot;: 0,<br>            &quot;clouds_mid&quot;: 1,<br>            &quot;datetime&quot;: &quot;2023-06-29&quot;,<br>            &quot;dewpt&quot;: 12.9,<br>            &quot;high_temp&quot;: 34.3,<br>            &quot;low_temp&quot;: 17,<br>            &quot;max_dhi&quot;: null,<br>            &quot;max_temp&quot;: 34.3,<br>            &quot;min_temp&quot;: 14.6,<br>            &quot;moon_phase&quot;: 0.866736,<br>            &quot;moon_phase_lunation&quot;: 0.4,<br>            &quot;moonrise_ts&quot;: 1688072502,<br>            &quot;moonset_ts&quot;: 1688021571,<br>            &quot;ozone&quot;: 300.1,<br>            &quot;pop&quot;: 0,<br>            &quot;precip&quot;: 0,<br>            &quot;pres&quot;: 958,<br>            &quot;rh&quot;: 55,<br>            &quot;slp&quot;: 1013,<br>            &quot;snow&quot;: 0,<br>            &quot;snow_depth&quot;: 0,<br>            &quot;sunrise_ts&quot;: 1688031860,<br>            &quot;sunset_ts&quot;: 1688086233,<br>            &quot;temp&quot;: 23.7,<br>            &quot;ts&quot;: 1688011260,<br>            &quot;uv&quot;: 10.5,<br>            &quot;valid_date&quot;: &quot;2023-06-29&quot;,<br>            &quot;vis&quot;: 24.128,<br>            &quot;weather&quot;: {<br>                &quot;description&quot;: &quot;Few clouds&quot;,<br>                &quot;code&quot;: 801,<br>                &quot;icon&quot;: &quot;c02d&quot;<br>            },<br>            &quot;wind_cdir&quot;: &quot;SSW&quot;,<br>            &quot;wind_cdir_full&quot;: &quot;south-southwest&quot;,<br>            &quot;wind_dir&quot;: 208,<br>            &quot;wind_gust_spd&quot;: 2.8,<br>            &quot;wind_spd&quot;: 2<br>        },<br>        {<br>            &quot;app_max_temp&quot;: 37.7,<br>            &quot;app_min_temp&quot;: 19.3,<br>            &quot;clouds&quot;: 25,<br>            &quot;clouds_hi&quot;: 100,<br>            &quot;clouds_low&quot;: 0,<br>            &quot;clouds_mid&quot;: 3,<br>            &quot;datetime&quot;: &quot;2023-06-30&quot;,<br>            &quot;dewpt&quot;: 18.8,<br>            &quot;high_temp&quot;: 39,<br>            &quot;low_temp&quot;: 19.9,<br>            &quot;max_dhi&quot;: null,<br>            &quot;max_temp&quot;: 39,<br>            &quot;min_temp&quot;: 17,<br>            &quot;moon_phase&quot;: 0.934741,<br>            &quot;moon_phase_lunation&quot;: 0.43,<br>            &quot;moonrise_ts&quot;: 1688163357,<br>            &quot;moonset_ts&quot;: 1688110282,<br>            &quot;ozone&quot;: 287.9,<br>            &quot;pop&quot;: 80,<br>            &quot;precip&quot;: 13.5625,<br>            &quot;pres&quot;: 954.8,<br>            &quot;rh&quot;: 68,<br>            &quot;slp&quot;: 1008.9,<br>            &quot;snow&quot;: 0,<br>            &quot;snow_depth&quot;: 0,<br>            &quot;sunrise_ts&quot;: 1688118287,<br>            &quot;sunset_ts&quot;: 1688172628,<br>            &quot;temp&quot;: 27.1,<br>            &quot;ts&quot;: 1688097660,<br>            &quot;uv&quot;: 10.4,<br>            &quot;valid_date&quot;: &quot;2023-06-30&quot;,<br>            &quot;vis&quot;: 24.128,<br>            &quot;weather&quot;: {<br>                &quot;description&quot;: &quot;Thunderstorm with rain&quot;,<br>                &quot;code&quot;: 201,<br>                &quot;icon&quot;: &quot;t02d&quot;<br>            },<br>            &quot;wind_cdir&quot;: &quot;SSW&quot;,<br>            &quot;wind_cdir_full&quot;: &quot;south-southwest&quot;,<br>            &quot;wind_dir&quot;: 196,<br>            &quot;wind_gust_spd&quot;: 5.8,<br>            &quot;wind_spd&quot;: 4<br>        }<br>    ],<br>    &quot;lat&quot;: &quot;40.8387&quot;,<br>    &quot;lon&quot;: &quot;-78.3526&quot;,<br>    &quot;state_code&quot;: &quot;PA&quot;,<br>    &quot;timezone&quot;: &quot;America/New_York&quot;<br>}</pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                                        </span>
+                                </span>
+                            </div>
+                        </td>
+
+                        <td width="130"><span class="nested-group-step">SUCCESS</span></td>
+                        <td width="100"><span class="nested-group-step"></span></td>
+                    </tr>
+
+                                </table>
+                            </td>
+                        </tr>
+                    <tr class="test-SUCCESS">
+
+                        <td width="50" class="step-icon">
+                            <a name="1"></a>
+                                <span style="margin-left: 20px;"
+                                      class="top-level-icon"><a href='##beforetable'><i class='fa fa-check-circle-o success-icon ' title='SUCCESS'></i></a>
+                                </span>
+                        </td>
+
+                        <td class="step-description-column">
+                            <div class="step-description">
+                                    <span class="top-level-step">
+                                                Then Status Code Should be 200 OK
+                                        </span>
+                                <span class="evidence">
+                                </span>
+                            </div>
+                        </td>
+
+                        <td width="130"><span class="top-level-step">SUCCESS</span></td>
+                        <td width="100"><span class="top-level-step">002ms</span></td>
+                    </tr>
+                    <tr class="test-SUCCESS">
+
+                        <td width="50" class="step-icon">
+                            <a name="2"></a>
+                                <span style="margin-left: 20px;"
+                                      class="top-level-icon"><a href='##beforetable'><i class='fa fa-check-circle-o success-icon ' title='SUCCESS'></i></a>
+                                </span>
+                        </td>
+
+                        <td class="step-description-column">
+                            <div class="step-description">
+                                    <span class="top-level-step">
+                                                And Validate GET forecast Weather json schema
+                                        </span>
+                                <span class="evidence">
+                                </span>
+                            </div>
+                        </td>
+
+                        <td width="130"><span class="top-level-step">SUCCESS</span></td>
+                        <td width="100"><span class="top-level-step">012ms</span></td>
+                    </tr>
+                <tr class="test-SUCCESS">
+                        <td colspan="2"></td>
+                    <td width="130"><span class="top-level-step"><em>SUCCESS</em></span></td>
+                    <td width="100"><span class="top-level-step"><em>0.95s</em></span></td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+
+    <div id="beforefooter"></div>
+
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <span class="version">Serenity BDD version 2.4.51</span>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        function toggleDiv(divId) {
+            $("#" + divId).toggle();
+            var imgsrc = $(".img" + divId).attr('src');
+            if (imgsrc == 'images/plus.png') {
+                $(".img" + divId).attr("src", function () {
+                    return "images/minus.png";
+                });
+
+            } else {
+                $(".img" + divId).attr("src", function () {
+                    return "images/plus.png";
+                });
+            }
+        }
+    </script>
+
+
+    <script type="text/javascript">
+        //<![CDATA[
+
+        $(document).ready(function () {
+            $('img.screenshot').imgPreview({
+                imgCSS: {
+                    width: '500px'
+                },
+                distanceFromCursor: {top: 10, left: -200}
+            });
+        });
+
+        //]]>
+    </script>
+    <div id="imgPreviewContainer" style="position: absolute; top: 612px; left: 355px; display: none; " class=""><img
+                src="" style="display: none; "></div>
+    <div id="imgPreviewContainer2" style="position: absolute; top: 925px; left: 320px; display: none; " class="">
+        <img style="width: 200px; display: none; " src=""></div>
+    <div id="imgPreviewWithStyles" style="position: absolute; top: 1272px; left: 321px; display: none; " class="">
+        <img style="height: 200px; opacity: 1; display: none; " src=""></div>
+    <div id="imgPreviewWithStyles2" style="display: none; position: absolute; "><img style="height: 200px; "></div>
+    <div id="imgPreviewWithStyles3" style="display: none; position: absolute; "><img style="height: 200px; "></div>
+
+</div>
+</body>
+</html>
